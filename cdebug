@@ -1,0 +1,11 @@
+#!/bin/sh
+
+NAME="$1"
+
+if [ -z "$1" ]; then
+	echo "Please specify a container to attach to" >&2
+	exit 1
+fi
+
+docker pull discourse/cdebug
+docker run --rm -it --network "container:$NAME" --pid "container:$NAME" --ipc "container:$NAME" --cap-add SYS_ADMIN --cap-add SYS_PTRACE --name "${NAME}__cdebug-$USER-$$" discourse/cdebug
